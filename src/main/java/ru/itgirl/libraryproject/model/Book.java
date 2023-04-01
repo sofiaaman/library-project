@@ -27,7 +27,6 @@ public class Book {
     @JoinColumn(name = "genre_id")
     private Genre genre;
 
-
     @ManyToMany
     @JoinTable(
             name = "author_book",

@@ -1,5 +1,6 @@
 package ru.itgirl.libraryproject.service;
 
+import ru.itgirl.libraryproject.dto.AuthorCreateDto;
 import ru.itgirl.libraryproject.dto.AuthorDto;
 
 public interface AuthorService {
@@ -11,4 +12,6 @@ public interface AuthorService {
     public AuthorDto getAuthorBySurnameV2(String surname);
 
     public AuthorDto getAuthorBySurnameV3(String surname);
+
+    public AuthorDto createAuthor(AuthorCreateDto authorCreateDto);
 }

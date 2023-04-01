@@ -7,12 +7,10 @@ import jakarta.persistence.criteria.Root;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import ru.itgirl.libraryproject.dto.AuthorCreateDto;
 import ru.itgirl.libraryproject.dto.AuthorDto;
-import ru.itgirl.libraryproject.dto.BookDto;
 import ru.itgirl.libraryproject.model.Author;
 import ru.itgirl.libraryproject.repository.AuthorRepository;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -56,8 +54,24 @@ public class AuthorServiceImpl implements AuthorService {
         return authorDto;
     }
 
-    private AuthorDto convertEntityToDto(Author author) {
+    @Override
+    public AuthorDto createAuthor(AuthorCreateDto authorCreateDto) {
 
+        Author author = authorRepository.save(convertDtoToEntity(authorCreateDto));
+        AuthorDto authorDto = convertEntityToDto1(author);
+        return authorDto;
+    }
+
+    private AuthorDto convertEntityToDto1(Author author) {
+        return null;
+    }
+
+    private Author convertDtoToEntity(AuthorCreateDto authorCreateDto) {
+        return null;
+    }
+
+    private AuthorDto convertEntityToDto(Author author) {
+/*
         List<BookDto> bookDtoList = author.getBooks()
                 .stream()
                 .map(book -> BookDto.builder()
@@ -67,11 +81,13 @@ public class AuthorServiceImpl implements AuthorService {
                         .build())
                 .toList();
         AuthorDto authorDto = AuthorDto.builder()
-                .books(bookDtoList)
+                //.books(bookDtoList)
                 .id(author.getId())
                 .name(author.getName())
                 .surname(author.getSurname())
                 .build();
         return authorDto;
+        */
+ return null;
     }
 }
