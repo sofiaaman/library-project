@@ -1,16 +1,14 @@
-package ru.itgirl.libraryproject.controller;
+package ru.itgirl.libraryproject.controller.rest;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import ru.itgirl.libraryproject.dto.AuthorCreateDto;
 import ru.itgirl.libraryproject.dto.AuthorDto;
 import ru.itgirl.libraryproject.service.AuthorService;
 
 @RestController
 @RequiredArgsConstructor
-public class AuthorController {
+public class AuthorRestController {
 
     private final AuthorService authorService;
 
@@ -34,4 +32,8 @@ public class AuthorController {
         return authorService.getAuthorBySurnameV3(surname);
     }
 
+    @PostMapping("/author/create")
+    AuthorDto createAuthor(@RequestBody AuthorCreateDto authorCreateDto){
+        return authorService.createAuthor(authorCreateDto);
+    }
 }

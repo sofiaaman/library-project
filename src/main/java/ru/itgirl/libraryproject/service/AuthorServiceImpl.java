@@ -9,8 +9,12 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import ru.itgirl.libraryproject.dto.AuthorCreateDto;
 import ru.itgirl.libraryproject.dto.AuthorDto;
+import ru.itgirl.libraryproject.dto.BookDto;
 import ru.itgirl.libraryproject.model.Author;
 import ru.itgirl.libraryproject.repository.AuthorRepository;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -55,39 +59,46 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
+    public List<AuthorDto> getAllAuthors() {
+        List<Author> authors = authorRepository.findAll();
+        return authors.stream()
+                .map(this::convertEntityToDto).collect(Collectors.toList());
+
+    }
+
+    @Override
     public AuthorDto createAuthor(AuthorCreateDto authorCreateDto) {
 
         Author author = authorRepository.save(convertDtoToEntity(authorCreateDto));
-        AuthorDto authorDto = convertEntityToDto1(author);
+        AuthorDto authorDto = convertEntityToDto(author);
         return authorDto;
-    }
-
-    private AuthorDto convertEntityToDto1(Author author) {
-        return null;
     }
 
     private Author convertDtoToEntity(AuthorCreateDto authorCreateDto) {
-        return null;
+        return Author.builder()
+                .name(authorCreateDto.getName())
+                .surname(authorCreateDto.getSurname())
+                .build();
     }
 
     private AuthorDto convertEntityToDto(Author author) {
-/*
-        List<BookDto> bookDtoList = author.getBooks()
-                .stream()
-                .map(book -> BookDto.builder()
-                        .genre(book.getGenre().getName())
-                        .name(book.getName())
-                        .id(book.getId())
-                        .build())
-                .toList();
+        List<BookDto> bookDtoList = null;
+        if (author.getBooks() != null) {
+            bookDtoList = author.getBooks()
+                    .stream()
+                    .map(book -> BookDto.builder()
+                            .genre(book.getGenre().getName())
+                            .name(book.getName())
+                            .id(book.getId())
+                            .build())
+                    .toList();
+        }
         AuthorDto authorDto = AuthorDto.builder()
-                //.books(bookDtoList)
                 .id(author.getId())
                 .name(author.getName())
                 .surname(author.getSurname())
+                .books(bookDtoList)
                 .build();
         return authorDto;
-        */
- return null;
     }
 }

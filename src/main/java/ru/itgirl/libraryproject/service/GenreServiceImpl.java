@@ -2,9 +2,7 @@ package ru.itgirl.libraryproject.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.itgirl.libraryproject.dto.AuthorDto;
-import ru.itgirl.libraryproject.dto.BookDto;
-import ru.itgirl.libraryproject.dto.GenreDto;
+import ru.itgirl.libraryproject.dto.*;
 import ru.itgirl.libraryproject.model.Genre;
 import ru.itgirl.libraryproject.repository.GenreRepository;
 
@@ -18,29 +16,25 @@ public class GenreServiceImpl implements GenreService {
     private final GenreRepository genreRepository;
 
     @Override
-    public GenreDto getGenreById(Long id) {
+    public GenreAndBookAndAuthorDto getGenreById(Long id) {
         Genre genre = genreRepository.findById(id).orElseThrow();
 
-        List<BookDto> bookDtoList = genre.getBooks()
+        List<AuthorAndBookDto> authorAndBookDtoList = genre.getBooks()
                 .stream()
-                .map(book -> BookDto.builder()
+                .map(book -> AuthorAndBookDto.builder()
                         .id(book.getId())
                         .name(book.getName())
-                        .genre(book.getGenre().getName())
-                        .authors(book.getAuthors()
+                        .author(book.getAuthors()
                                 .stream()
-                                .peek(author -> AuthorDto.builder()
-                                        .id(author.getId())
-                                        .name(author.getName())
-                                        .surname(author.getSurname()))
-                                .collect(Collectors.toList()))
+                                .map(author -> author.getName() + " " + author.getSurname())
+                                .collect(Collectors.joining(", ")))
                         .build())
                 .toList();
 
-        GenreDto genreDto = new GenreDto();
-        genreDto.setId(genre.getId());
-        genreDto.setName(genre.getName());
-        genreDto.setBooks(bookDtoList);
-        return genreDto;
+        GenreAndBookAndAuthorDto responseGenreAndBookAndAuthorDto = new GenreAndBookAndAuthorDto();
+        responseGenreAndBookAndAuthorDto.setId(genre.getId());
+        responseGenreAndBookAndAuthorDto.setName(genre.getName());
+        responseGenreAndBookAndAuthorDto.setBooks(authorAndBookDtoList);
+        return responseGenreAndBookAndAuthorDto;
     }
 }

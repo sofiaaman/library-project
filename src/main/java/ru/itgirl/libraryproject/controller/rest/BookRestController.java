@@ -1,15 +1,14 @@
-package ru.itgirl.libraryproject.controller;
+package ru.itgirl.libraryproject.controller.rest;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import ru.itgirl.libraryproject.dto.BookCreateDto;
 import ru.itgirl.libraryproject.dto.BookDto;
 import ru.itgirl.libraryproject.service.BookService;
 
 @RestController
 @RequiredArgsConstructor
-public class BookController {
+public class BookRestController {
 
     private final BookService bookService;
 
@@ -28,5 +27,8 @@ public class BookController {
         return bookService.getByNameV3(name);
     }
 
-
+    @PostMapping("/book/create")
+    BookDto createBook(@RequestBody BookCreateDto bookCreateDto) {
+        return bookService.createBook(bookCreateDto);
+    }
 }

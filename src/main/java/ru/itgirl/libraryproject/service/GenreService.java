@@ -1,7 +1,7 @@
 package ru.itgirl.libraryproject.service;
 
-import ru.itgirl.libraryproject.dto.GenreDto;
+import ru.itgirl.libraryproject.dto.GenreAndBookAndAuthorDto;
 
 public interface GenreService {
-    public GenreDto getGenreById(Long id);
+    public GenreAndBookAndAuthorDto getGenreById(Long id);
 }
